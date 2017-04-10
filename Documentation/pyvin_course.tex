@@ -1,6 +1,7 @@
 \documentclass[12pt]{article}%
 \usepackage{graphicx}
 \usepackage{ragged2e}
+\usepackage{indentfirst}
 %\usepackage{setspace}
 %\usepackage{subfigure}
 %\usepackage{amsmath}
@@ -55,8 +56,8 @@ Davis, CA  95616. E-mail: msdogan@ucdavis.edu.},
          15 min &\textendash & Introduction and set-up \\
          1 hr &\textendash & CALVIN theory and model introduction \\
          \bf{15 min} &\textendash & \bf{Break} \\
-         15 min &\textendash & Data flow overview \\
          15-20 min &\textendash & HOBBES database \\
+         15 min &\textendash & Data flow overview \\
          \bf{1 hr} &\textendash & \bf{Break} \\
          20-25 min &\textendash & PyVIN updates and model architecture\\
          15 min &\textendash & A PyVIN example \\
@@ -79,17 +80,30 @@ Please bring your \textbf{laptop} with below software dependencies installed if 
 %
 \subsection{Command line}
 %
+This shortcourse is not intended to explain command line use. It assumes some but not extensive command line knowledge. If you like to learn basics of command line, here is a nice and short crash course:
+%
+\par https://learnpythonthehardway.org/book/appendixa.html
+%
 \subsubsection{Windows}
 %
 \subsubsection{Mac OS}
 %
 \pagebreak
 %
-\section{Introduction and CALVIN background}
-Developed in early 2000s, CALVIN is a model that combines ideas from economics and engineering optimization with advances in software and data to suggest more integrated management of water supplies regionally and throughout California. CALVIN is an hydro-economic optimization model for California's advanced water infrastructure that integrates the operation of water facilities, resources, and demands, and it aims to optimize surface and groundwater deliveries to agricultural and urban water users. It allocates water to maximize statewide agricultural and urban economic value, considering physical and policy constraints. It replicates water market operations transferring water from users with lower willingness-to-pay to users with higher willingness-to-pay. CALVIN uses historical hydrology and 2050 water demand projections for its operations. \\
-With the recent updates
+\section{Introduction and background}
 %
-\section{Database}
+Developed in early 2000s, {\bf CAL}ifornia {\bf V}alue {\bf IN}tegrated model (CALVIN) combines ideas from economics and engineering optimization with advances in software and data to suggest more integrated management of water supplies regionally and throughout California. CALVIN is an hydro-economic optimization model for California's advanced water infrastructure that integrates the operation of water facilities, resources, and demands, and it aims to optimize surface and groundwater deliveries to agricultural and urban water users. It allocates water to maximize statewide agricultural and urban economic value, considering physical and policy constraints. It replicates water market operations transferring water from users with lower willingness-to-pay to users with higher willingness-to-pay. CALVIN uses historical hydrology and 2050 water demand projections for its operations. \\
+\par CALVIN forces quantitative understanding of integrated water and economic system. Motivation for the CALVIN effort include:
+\begin{itemize}
+	\item making better sense of integrated system and operations
+	\item seeking ways to improve system management
+	\item quantifying user willingness to pay for additional water
+	\item finding insights into changes in physical capacities and policies
+\end{itemize}
+%
+\par With the recent updates, CALVIN is evolved to open-source PyVIN model, optimizing water resources in a short amount of time with state-of-the-art solvers and modeling platform. PyVIN has the same input data and objective as CALVIN but it is modeled on Pyomo, a Python-based high level algebraic modeling language. PyVIN also uses HOBBES database, which allows better documentation, collaboration and communication between models as well as modelers.
+%
+\section{HOBBES database}
 %
 \section{Structure}
 %
