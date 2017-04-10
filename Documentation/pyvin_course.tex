@@ -1,0 +1,103 @@
+\documentclass[12pt]{article}%
+\usepackage{graphicx}
+\usepackage{ragged2e}
+%\usepackage{setspace}
+%\usepackage{subfigure}
+%\usepackage{amsmath}
+%\usepackage{amsfonts}
+%\usepackage{amssymb}
+%\usepackage{amsbsy}
+%\usepackage{times}
+%\usepackage[colorlinks=true,citecolor=black,linkcolor=black]{hyperref}
+%\usepackage{multirow}
+%\usepackage{booktabs}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr}
+%
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{Spring 2017}
+\lhead{CALVIN \& PyVIN Shortcourse}
+\rfoot{Page \thepage}
+% 
+\begin{document}
+%
+\title{\textbf{CALVIN \& PyVIN} Shortcourse}
+%
+\author{
+Mustafa S. Dogan
+%
+\thanks{
+Graduate Student,
+Dept.\ of Civil and Env. Eng.,
+Univ.\ of California, Davis, 
+1 Shields Avenue,
+Davis, CA  95616. E-mail: msdogan@ucdavis.edu.},
+}
+%
+\maketitle
+%
+\tableofcontents
+%
+\pagebreak
+%
+\begin{center}
+	\Huge{Agenda and Topics \\}
+\end{center}
+%
+\hrulefill
+\begin{table}[h]
+    \centering
+    %\caption{\huge agenda & topics}
+    \label{agenda}
+    \begin{tabular}{lll}
+         15 min &\textendash & Introduction and set-up \\
+         1 hr &\textendash & CALVIN theory and model introduction \\
+         \bf{15 min} &\textendash & \bf{Break} \\
+         15 min &\textendash & Data flow overview \\
+         15-20 min &\textendash & HOBBES database \\
+         \bf{1 hr} &\textendash & \bf{Break} \\
+         20-25 min &\textendash & PyVIN updates and model architecture\\
+         15 min &\textendash & A PyVIN example \\
+         \bf{15 min} &\textendash & \bf{Break} \\
+         15-20 min &\textendash & Required software and installation \\
+         20 min &\textendash & Your first PyVIN run \\
+         20-25 min &\textendash & Postprocessing results
+    \end{tabular}
+\end{table}
+%
+\pagebreak
+\section{Prerequisites}
+Please bring your \textbf{laptop} with below software dependencies installed if you want a hands-on PyVIN experience. Install following software in advance since some of them, such as Anaconda, takes long time to download and install.
+%
+\begin{itemize}
+	\item {\bf Python v3 with Anaconda} \\ Link: https://www.continuum.io/downloads
+	\item {\bf Pyomo} \\ Command: {\tt conda install -c cachemeorg pyomo}
+	\item {\bf GitHub} \\ Link: https://desktop.github.com
+\end{itemize}
+%
+\subsection{Command line}
+%
+\subsubsection{Windows}
+%
+\subsubsection{Mac OS}
+%
+\pagebreak
+%
+\section{Introduction and CALVIN background}
+Developed in early 2000s, CALVIN is a model that combines ideas from economics and engineering optimization with advances in software and data to suggest more integrated management of water supplies regionally and throughout California. CALVIN is an hydro-economic optimization model for California's advanced water infrastructure that integrates the operation of water facilities, resources, and demands, and it aims to optimize surface and groundwater deliveries to agricultural and urban water users. It allocates water to maximize statewide agricultural and urban economic value, considering physical and policy constraints. It replicates water market operations transferring water from users with lower willingness-to-pay to users with higher willingness-to-pay. CALVIN uses historical hydrology and 2050 water demand projections for its operations. \\
+With the recent updates
+%
+\section{Database}
+%
+\section{Structure}
+%
+\section{Updated version: PyVIN}
+%
+\subsection{new version}
+%
+\subsection{software requirements}
+%
+\subsection{first model run}
+\end{document}
