@@ -13,3 +13,11 @@ https://github.com/ucd-cws/calvin-network-tools
 
 ## HOBBES database
 https://github.com/ucd-cws/calvin-network-data
+
+## Some postprocessed results
+
+Change in groundwater and surface water storage over 82-year period
+
+![Example](https://github.com/msdogan/CALVIN-PyVIN_shortcourse/blob/master/Examples/full_size_model/sr.gif)
+
+![Example](https://github.com/msdogan/CALVIN-PyVIN_shortcourse/blob/master/Examples/full_size_model/gw.gif)
