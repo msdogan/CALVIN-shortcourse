@@ -16,8 +16,10 @@ https://github.com/ucd-cws/calvin-network-data
 
 ## Some postprocessed results
 
-Change in groundwater and surface water storage over 82-year period
+Change in surface water storage over 82-year period:
 
 ![Example](https://github.com/msdogan/CALVIN-PyVIN_shortcourse/blob/master/Examples/full_size_model/sr.gif)
+
+Change in groundwater storage over 82-year period:
 
 ![Example](https://github.com/msdogan/CALVIN-PyVIN_shortcourse/blob/master/Examples/full_size_model/gw.gif)
