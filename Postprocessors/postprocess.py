@@ -1,6 +1,5 @@
 import json
 import csv
-import pandas as pd
 
 def save_dict_as_csv(data, filename):
   node_keys = sorted(data.keys())
@@ -50,13 +49,13 @@ F,S,E,SV,SC = {}, {}, {}, {}, {}
 D_up,D_lo,D_node = {}, {}, {}
 
 # load network links
-with open('linksupdated.tsv', 'rU') as f:
-  reader = csv.reader(f,delimiter='\t')
+with open('links.csv', 'rU') as f:
+  reader = csv.reader(f)
   network = list(reader)
 
 # load network nodes
-with open('nodesupdated.tsv', 'rU') as f:
-  reader = csv.reader(f,delimiter='\t')
+with open('nodes.csv', 'rU') as f:
+  reader = csv.reader(f)
   network_nodes = list(reader)
 
 # load list of demand nodes to find shortages/costs for
