@@ -1,21 +1,31 @@
-# CALVIN Shortcourse
+# CALVIN Fall 2018 Shortcourse
+
 This is a short course intended for those who are interested in large-scale water optimization modeling with CALVIN model. Some basic optimization knowledge, especially linear programming, is assumed. This crash course introduces basics of CALVIN model with Pyomo modeling environment. CALVIN is a large-scale hydroeconomic optimization model for California, aiming to optimize water allocation to users. CALVIN is the same model as CALVIN but modeled in a different environment employing different solvers. It is an integrated model with surface and groundwater representation, covering California's most water and water-related economic activities.
 *********************************
 # Registration:
-https://goo.gl/forms/IBPTBxm4qchF9BVL2
+Please RVSP by filling out [registration form]{https://goo.gl/forms/6nUVGddb8xhUOSVn1}
+
 *********************************
 # Related GitHub repositories:
 
 ## CALVIN main repository
-https://github.com/msdogan/pyvin
+
+This repository has CALVIN's model structure, including decision variables, objective function and constraints. There are also example runs and some brief documentation.
+
+https://github.com/ucd-cws/calvin
+
+## HOBBES database
+
+HOBBES database hosting CALVIN network data. Database includes California's water infrastructure data (capacities, network properties etc) and hydrology data (inflow, groundwater etc.)
+
+https://github.com/ucd-cws/calvin-network-data
 
 ## HOBBES network tools
-(used to create PyVIN input network matrix from HOBBES database)
+
+HOBBES network tool is used to export water network matrix of California from HOBBES database in a format that CALVIN python version can read.
 
 https://github.com/ucd-cws/calvin-network-tools
 
-## HOBBES database
-https://github.com/ucd-cws/calvin-network-data
 
 ## Some postprocessed results
 
