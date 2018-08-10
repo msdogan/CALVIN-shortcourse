@@ -28,7 +28,6 @@ CALVIN network tool is used to export water network matrix of California from HO
 
 https://github.com/ucd-cws/calvin-network-tools
 
-
 ## Some postprocessed results
 
 Change in California's overall surface water storage over the 82-year period:
@@ -38,3 +37,8 @@ Change in California's overall surface water storage over the 82-year period:
 Change in California's overall groundwater storage over the 82-year period:
 
 ![Example](https://github.com/msdogan/CALVIN-shortcourse/blob/master/Examples/full_size_model/gw.gif)
+
+Water deliveries to agricultural and urban users 
+(USV: Upper Sacramento Valley; LSVD: Lower Sacramento Valley and Delta; SJSB: San Joaquin and South Bay; TB: Tulare Basin; SC: Southern California
+
+![Example](https://github.com/msdogan/CALVIN-shortcourse/blob/master/Examples/full_size_model/portfolio.png)
