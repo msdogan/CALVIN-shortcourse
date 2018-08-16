@@ -32,13 +32,13 @@ https://github.com/ucd-cws/calvin-network-tools
 
 Change in California's overall surface water storage over the 82-year period:
 
-![Example](https://github.com/msdogan/CALVIN-shortcourse/blob/master/Examples/full_size_model/sr.gif)
+![Example](Examples/full_size_model/sr.gif)
 
 Change in California's overall groundwater storage over the 82-year period:
 
-![Example](https://github.com/msdogan/CALVIN-shortcourse/blob/master/Examples/full_size_model/gw.gif)
+![Example](Examples/full_size_model/gw.gif)
 
 Water deliveries to agricultural and urban users 
 (USV: Upper Sacramento Valley; LSVD: Lower Sacramento Valley and Delta; SJSB: San Joaquin and South Bay; TB: Tulare Basin; SC: Southern California
 
-![Example](https://github.com/msdogan/CALVIN-shortcourse/blob/master/Examples/full_size_model/portfolio.png)
+![Example](Examples/full_size_model/portfolio.png)
