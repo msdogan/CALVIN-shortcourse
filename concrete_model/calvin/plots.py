@@ -45,7 +45,7 @@ def plot_clustered_stacked(dfall, labels=None, title="Water Supply Portfolio",  
     axe.add_artist(l1)
     return axe
 
-fp = '../results2'
+fp = '../results3'
 F = pd.read_csv(fp + '/flow.csv', index_col=0, parse_dates=True)
 portfolio = pd.read_csv('data/portfolio.csv', index_col = 0)
 
