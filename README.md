@@ -7,6 +7,11 @@ This is a short course intended for those who are interested in large-scale wate
 No registration is needed!
 
 *********************************
+# CALVIN website:
+See CALVIN website for documentation and more information
+
+https://watershed.ucdavis.edu/shed/lund/CALVIN/
+
 # Related GitHub repositories:
 
 ## CALVIN main repository
