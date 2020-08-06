@@ -6,10 +6,6 @@ This is a short course intended for those who are interested in large-scale wate
 
 No registration is needed!
 
-Please RVSP by filling out registration form
-
-https://goo.gl/forms/6nUVGddb8xhUOSVn1
-
 *********************************
 # Related GitHub repositories:
 
