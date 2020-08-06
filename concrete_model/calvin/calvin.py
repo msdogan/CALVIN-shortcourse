@@ -207,8 +207,8 @@ class CALVIN():
     model.k = Set(initialize=range(15))
     model.A = Set(within=model.N*model.N*model.k, 
                   initialize=self.links, ordered=True)
-    model.source = Param(initialize='SOURCE')
-    model.sink = Param(initialize='SINK')
+    model.source = Param(initialize='SOURCE',within=Any)
+    model.sink = Param(initialize='SINK',within=Any)
 
     def init_params(p):
       if p == 'cost' and debug_mode:
@@ -289,7 +289,7 @@ class CALVIN():
     from pyomo.opt import SolverFactory
     opt = SolverFactory(solver)
 
-    if nproc > 1 and solver is not 'glpk':
+    if nproc > 1 and solver != 'glpk':
       opt.options['threads'] = nproc
     
     if debug_mode:
