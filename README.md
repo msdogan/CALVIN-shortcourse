@@ -4,7 +4,19 @@ This is a short course intended for those who are interested in large-scale wate
 *********************************
 # Registration:
 
-No registration is needed!
+Registration is free of charge but please fill out registration form
+
+https://forms.gle/GoEGirVznrmp9HHm7
+
+*********************************
+# Location:
+
+Online - Zoom Meetings
+
+https://ucmerced.zoom.us/j/97664369012?pwd=Q3ppSGxBUDI1NDF6MkFFVFlCUnZnQT09 
+
+Meeting ID: 976 6436 9012
+Passcode: CALVIN2020
 
 *********************************
 # CALVIN website:
