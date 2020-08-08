@@ -17,4 +17,4 @@ for i in range(1922,1924):
   calvin.solve_pyomo_model(solver='glpk', nproc=1, debug_mode=False)
 
   # this will append to results files
-  eop = postprocess(calvin.df, calvin.model, resultdir='results-annual', annual=True) 
+  eop = postprocess(calvin.df, calvin.model, resultdir='results-annual/'+str(i), annual=True) 
