@@ -2,7 +2,7 @@
 
 This is a short course intended for those who are interested in large-scale water optimization modeling with CALVIN model. Some basic optimization knowledge, especially linear programming, is assumed. This crash course introduces basics of CALVIN model with Pyomo modeling environment. CALVIN is a large-scale hydroeconomic optimization model for California, aiming to optimize water allocation to users. CALVIN is the same model as CALVIN but modeled in a different environment employing different solvers. It is an integrated model with surface and groundwater representation, covering California's most water and water-related economic activities.
 
-**It is important to note,** in order to understand the material covered in this short course a solid grasp of Github and Python is needed.
+**Important note** In order to understand the material covered in this short course, a solid grasp of Github and Python is needed.
 
 *********************************
 # CALVIN website:
