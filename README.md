@@ -9,6 +9,18 @@ See CALVIN website for documentation and more information
 https://watershed.ucdavis.edu/shed/lund/CALVIN/
 
 *********************************
+# Pre workshop reading:
+Recordings from the Workshop
+
+https://ucmerced.box.com/s/1bhs3f4myazj5g0j8wd00yb3nwjh5xwr
+
+*********************************
+# Workshop Agenda:
+Agenda from the Workshop
+
+https://ucmerced.box.com/s/zy4mjw13wcp8qpifrtjbsovl5n0nijqe
+
+*********************************
 # Workshop Recordings:
 Recordings from the Workshop
 
