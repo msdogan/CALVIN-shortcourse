@@ -1,22 +1,6 @@
 # CALVIN Summer 2020 Shortcourse
 
 This is a short course intended for those who are interested in large-scale water optimization modeling with CALVIN model. Some basic optimization knowledge, especially linear programming, is assumed. This crash course introduces basics of CALVIN model with Pyomo modeling environment. CALVIN is a large-scale hydroeconomic optimization model for California, aiming to optimize water allocation to users. CALVIN is the same model as CALVIN but modeled in a different environment employing different solvers. It is an integrated model with surface and groundwater representation, covering California's most water and water-related economic activities.
-*********************************
-# Registration:
-
-Registration is free of charge but please fill out registration form
-
-https://forms.gle/GoEGirVznrmp9HHm7
-
-*********************************
-# Location:
-
-Online - Zoom Meetings
-
-https://ucmerced.zoom.us/j/97664369012?pwd=Q3ppSGxBUDI1NDF6MkFFVFlCUnZnQT09 
-
-Meeting ID: 976 6436 9012
-Passcode: CALVIN2020
 
 *********************************
 # CALVIN website:
@@ -29,6 +13,12 @@ https://watershed.ucdavis.edu/shed/lund/CALVIN/
 Recordings from the Workshop
 
 https://ucmerced.box.com/s/ttta7lfh1pspuh7xl6yurn8ogmnjmkr5
+
+*********************************
+# How to install CALVIN:
+Recordings from the Workshops and documentation
+
+https://ucmerced.box.com/s/y7mciauhpod3e6lblawumxy22hngrnkm
 
 # Related GitHub repositories:
 
