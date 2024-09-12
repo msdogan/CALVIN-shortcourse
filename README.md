@@ -18,8 +18,6 @@ https://ucmerced.box.com/s/1bhs3f4myazj5g0j8wd00yb3nwjh5xwr
 # Workshop Agenda:
 Agenda from the Workshop
 
-![Agenda](Documentation/agenda.pdf)
-
 *********************************
 # Workshop Recordings from 2020 Workshop:
 Recordings from the Workshop
