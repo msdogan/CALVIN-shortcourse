@@ -9,6 +9,12 @@ See CALVIN website for documentation and more information
 https://CALVIN.ucdavis.edu
 
 *********************************
+# CALVIN online visualization tool:
+Online CALVIN schematic and data visualization tool
+
+https://cwn.cws.ucdavis.edu
+
+*********************************
 # Pre Workshop Reading:
 Recordings from the Workshop
 
