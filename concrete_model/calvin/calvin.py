@@ -202,10 +202,10 @@ class CALVIN():
     :returns: dataframe of links, excluding debug links.
     """
     df = self.df
-    ix = df.index[df.index.str.contains('DBUG')]
-    df.drop(ix, inplace=True, axis=0)
-    self.nodes = pd.unique(df[['i','j']].values.ravel()).tolist()
-    self.links = list(zip(df.i,df.j,df.k))
+    # ix = df.index[df.index.str.contains('DBUG')]
+    # df.drop(ix, inplace=True, axis=0)
+    # self.nodes = pd.unique(df[['i','j']].values.ravel()).tolist()
+    # self.links = list(zip(df.i,df.j,df.k))
     return df
 
 
@@ -225,9 +225,10 @@ class CALVIN():
     if not debug_mode and self.df.index.str.contains('DBUG').any():
       # previously ran in debug mode, but now done
       df = self.remove_debug_links()
-      df.to_csv(self.linksfile + '-final.csv')
     else:
       df = self.df
+
+    df.to_csv(self.linksfile + '-final.csv')
 
     self.log.info('Creating Pyomo Model (debug=%s)' % debug_mode)
 
@@ -303,7 +304,7 @@ class CALVIN():
     self.model = model
 
 
-  def solve_pyomo_model(self, solver='glpk', nproc=1, debug_mode=False, maxiter=10):
+  def solve_pyomo_model(self, solver='glpk', nproc=1, debug_mode=False, maxiter=10, tee=False, save_json=False):
     """
     Solve Pyomo model (must be called after create_pyomo_model)
     
@@ -343,11 +344,15 @@ class CALVIN():
 
     else:
       self.log.info('-----Solving Pyomo Model (debug=%s)' % debug_mode)
-      self.results = opt.solve(self.model, tee=False)
+      self.results = opt.solve(self.model, tee=tee)
 
       if self.results.solver.termination_condition == TerminationCondition.optimal:
         self.log.info('Optimal Solution Found (debug=%s).' % debug_mode)
-        self.model.solutions.load_from(self.results)
+        # save raw results to stdout
+        if save_json:
+            self.model.solutions.store_to(self.results)
+            self.results.write(filename='results.json', format='json')
+        # self.model.solutions.load_from(self.results)
       else:
         raise RuntimeError('Problem Infeasible. Run again starting from debug mode.')
 

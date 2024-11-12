@@ -4,10 +4,10 @@ from calvin import *
 calvin = CALVIN('links_example1.csv')
 
 # create pyomo model from specified data file
-calvin.create_pyomo_model(debug_mode=True)
+calvin.create_pyomo_model()
 
 # solve the problem
-calvin.solve_pyomo_model(solver='glpk', nproc=1, debug_mode=True)
+calvin.solve_pyomo_model(solver='glpk', nproc=1, tee=True)
 
 # postprocess results to create time-series files
-postprocess(calvin.df, calvin.model, resultdir='results3')
+postprocess(calvin.df, calvin.model, resultdir='results')
