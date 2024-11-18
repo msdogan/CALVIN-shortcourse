@@ -22,7 +22,7 @@ import os
 import warnings
 warnings.filterwarnings("ignore")
 
-fp = 'full_size_model_94_years'
+fp = 'full_size_model_94_years_10percent_reduced_inflow'
 
 flow = pd.read_csv(fp + '/flow.csv', index_col=0, parse_dates=True)
 storage = pd.read_csv(fp + '/storage.csv', index_col=0, parse_dates=True)
