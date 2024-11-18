@@ -12,6 +12,7 @@ import numpy as np
 import os
 
 fps = {
+       'postprocess_full_size_model': 'CALVIN 82year',
        'postprocess_full_size_model_94_years': 'CALVIN 94year',
        'postprocess_full_size_model_94_years_10percent_reduced_inflow': '10% Reduced Inflow'
        }
