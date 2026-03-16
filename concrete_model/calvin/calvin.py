@@ -209,7 +209,7 @@ class CALVIN():
     return df
 
 
-  def create_pyomo_model(self, debug_mode=False, debug_cost=2e7):
+  def create_pyomo_model(self, debug_mode=False, debug_cost=2e7, model_name='Example model'):
     """
     Use link data to create Pyomo model (constraints and objective function)
     But do not solve yet.
@@ -232,7 +232,7 @@ class CALVIN():
 
     self.log.info('Creating Pyomo Model (debug=%s)' % debug_mode)
 
-    model = ConcreteModel()
+    model = ConcreteModel(name=model_name)
 
     model.N = Set(initialize=self.nodes)
     model.k = Set(initialize=range(15))
