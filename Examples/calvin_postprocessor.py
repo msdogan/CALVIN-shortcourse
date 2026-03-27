@@ -22,10 +22,13 @@ import os
 import warnings
 warnings.filterwarnings("ignore")
 
-fp = 'full_size_model'
+fp = 'network_historical_no_overdraft'
 
 flow = pd.read_csv(fp + '/flow.csv', index_col=0, parse_dates=True)
 storage = pd.read_csv(fp + '/storage.csv', index_col=0, parse_dates=True)
+
+ag_target = pd.read_csv(f'ubt_ag_target_march2026.csv', index_col=0, parse_dates=True)
+urban_target = pd.read_csv(f'ubt_urban_target.csv', index_col=0, parse_dates=True)
 
 links = flow.keys()
 
@@ -117,7 +120,20 @@ for link in flow_no_debug.keys():
 ag_delivery = flow_no_debug[ag_delivery_links]
 
 # save ag delivery
-ag_delivery.to_csv(resultdir+'/ag_delivery.csv')
+ag_delivery.to_csv(resultdir+'/ag_delivery_total.csv')
+
+# save ag scarcity
+ag_links = flow_no_debug[ag_target.keys()]
+ag_links.to_csv(resultdir+'/ag_delivery_separated.csv')
+
+ag_scarcity = ag_target - ag_links
+ag_scarcity[ag_scarcity < 0] = 0
+ag_scarcity.to_csv(resultdir+'/ag_scarcity.csv')
+
+ag_scarcity_percent = (ag_scarcity / ag_target)*100
+ag_scarcity_percent[ag_scarcity_percent < 0] = 0
+ag_scarcity_percent.to_csv(resultdir+'/ag_scarcity_percent.csv')
+
 
 # urban deliveries
 urban_delivery_links = []
@@ -129,6 +145,17 @@ urban_delivery = flow_no_debug[urban_delivery_links]
 
 # save urban delivery
 urban_delivery.to_csv(resultdir+'/urban_delivery.csv')
+
+# # save urban scarcity
+# urban_links = flow_no_debug[urban_target.keys()]
+# urban_scarcity = urban_target - urban_links
+# urban_scarcity.to_csv(resultdir+'/urban_scarcity.csv')
+
+'''
+KeyError: "['U101-INT_REDDIN', 'U508-INT_BLYTHE', 'U510-INT_EL_CEN', 'HXI504-IND_CMWD', 'HXI509-IND_EMWD', 'HXI511-IND_SDMWD', 'HXI506-IND_SBV', 'HXI304-IND_SCV', 
+'U504-IRES_CMWD', 'U509-IRES_EMWD', 'U511-IRES_SDWD', 'U506-IRES_SBV', 'HXI510-EXT_EL_CEN', 'HXI508-EXT_BLYTHE', 'HXCMWD-ERES_CMWD', 'HXI506-ERES_SBV', 'HXSD-ERES_SDWD', 
+'HXI501-ERES_VENT', 'HXI101-EXT_REDDIN', 'HXI304-ERES_SCV', 'HXI402-EXT_CVPM14', 'U408-EXT_CVPM19'] not in index"
+'''
 
 # ag deliveries from surface water
 ag_delivery_sw_links = []
@@ -221,3 +248,14 @@ gw_inflow = flow_no_debug[gw_inflow_links]
 
 # save gw inflow data
 gw_inflow.to_csv(resultdir+'/gw_inflow.csv')
+
+# ag region sinks
+ag_region_sink_links = []
+for link in flow_no_debug.keys():
+    i,j=link.split('-')
+    if i[:3] == 'HSU' and j[:4] == 'SINK':
+        ag_region_sink_links.append(link)
+ag_region_sink = flow_no_debug[ag_region_sink_links]
+
+# save ag region sinks data
+ag_region_sink.to_csv(resultdir+'/ag_region_sink.csv')
