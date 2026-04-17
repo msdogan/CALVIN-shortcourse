@@ -1,7 +1,7 @@
 from calvin import *
 
 # specify data file
-calvin = CALVIN('links_one_year.csv')
+calvin = CALVIN('links_one_year.csv',log_name="calvin_one")
 
 # create pyomo model from specified data file
 calvin.create_pyomo_model()

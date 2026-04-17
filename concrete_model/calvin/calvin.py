@@ -41,7 +41,7 @@ class CALVIN():
       screen_handler.setFormatter(screen_formatter)
       self.log.addHandler(screen_handler)
 
-      file_handler = logging.FileHandler("{}.log".format(log_name))
+      file_handler = logging.FileHandler("{}.log".format('calvin_log')) # change format to log_name if you want separate files
       file_handler.setLevel(logging.DEBUG)
       file_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
       file_handler.setFormatter(file_formatter)
