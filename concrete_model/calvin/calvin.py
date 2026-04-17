@@ -9,13 +9,14 @@ import pandas as pd
 
 class CALVIN():
 
-  def __init__(self, linksfile, ic=None, log_name="calvin"):
+  def __init__(self, linksfile, ic=None, no_od=False, log_name="calvin"):
     """
     Initialize CALVIN model object.
 
     :param linksfile: (string) CSV file containing network link information
     :param ic: (dict) Initial storage conditions for surface reservoirs
                 only used for annual optimization
+    :param nod: no groundwater overdraft for groundwater reservoirs. Ending storage >= Initial storage
     :param log_name: A name for a logger - will be used to keep logs from different model runs separate in files.
                 Defaults to "calvin", which results in a log file in the current working directory named "calvin.log".
                 You can change this each time you instantiate the CALVIN class if you want to output separate logs
@@ -69,6 +70,9 @@ class CALVIN():
     self.links = list(zip(df.i,df.j,df.k))
     self.networkcheck() # make sure things aren't broken
     
+    if no_od:
+        self.no_gw_overdraft()
+    
 
   def apply_ic(self, ic):
     """
@@ -111,9 +115,16 @@ class CALVIN():
     """
     Impose constraints to prevent groundwater overdraft
 
-    (not currently implemented)
+    :returns: nothing, but modifies the model object
     """
-    pass
+    ix_i = (self.df.i.str.contains('INITIAL') & self.df.j.str.contains('GW')) # initial groundwater storage
+    ix_f = (self.df.i.str.contains('GW') & self.df.j.str.contains('FINAL')) # final groundwater storage
+    
+    initial = self.df.loc[ix_i, ['lower_bound','upper_bound']].values
+    final = self.df.loc[ix_f, ['lower_bound','upper_bound']].values
+    mask = final < initial # element-wise comparison, masking because for some gw basins final > initial (negative overdraft)
+    final[mask] = initial[mask] # update only where condition holds, set final storage as initial storage (no overdraft)
+    self.df.loc[ix_f, ['lower_bound','upper_bound']] = final
 
   def networkcheck(self):
     """

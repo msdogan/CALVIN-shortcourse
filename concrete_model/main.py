@@ -7,7 +7,7 @@ calvin = CALVIN('links_one_year.csv')
 calvin.create_pyomo_model()
 
 # solve the problem
-calvin.solve_pyomo_model(solver='glpk', nproc=1, tee=True, save_json=True)
+calvin.solve_pyomo_model(solver='glpk', nproc=1, tee=True)
 
 # postprocess results to create time-series files
 postprocess(calvin.df, calvin.model, resultdir='results')
