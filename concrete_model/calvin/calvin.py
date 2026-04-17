@@ -28,6 +28,7 @@ class CALVIN():
                 issue. It could be supported, but there is no need at this moment.
     :returns: CALVIN model object
     """
+    print("############################ \n########## CALVIN ########## \n############################")
 
     # set up logging code
     self.log = logging.getLogger(log_name)
@@ -173,8 +174,8 @@ class CALVIN():
       links.upper_bound = maxub
       links['link'] = links.i.map(str) + '_' + links.j.map(str) + '_' + links.k.map(str)
       links.set_index('link', inplace=True)
-      self.df = pd.concat([df,links.drop_duplicates()])
-      
+      self.df = self.df._append(links.drop_duplicates())
+
 
   def fix_hydropower_lbs(self):
     """
@@ -202,14 +203,14 @@ class CALVIN():
     :returns: dataframe of links, excluding debug links.
     """
     df = self.df
-    # ix = df.index[df.index.str.contains('DBUG')]
+    # ix = df.index[df.index.str.contains('DBUG')] - Do nothing for now - MSD 9/13/2024
     # df.drop(ix, inplace=True, axis=0)
     # self.nodes = pd.unique(df[['i','j']].values.ravel()).tolist()
     # self.links = list(zip(df.i,df.j,df.k))
     return df
 
 
-  def create_pyomo_model(self, debug_mode=False, debug_cost=2e7, model_name='Example model'):
+  def create_pyomo_model(self, debug_mode=False, debug_cost=2e10, save_final_csv=False):
     """
     Use link data to create Pyomo model (constraints and objective function)
     But do not solve yet.
@@ -224,15 +225,16 @@ class CALVIN():
     # work on a local copy of the dataframe
     if not debug_mode and self.df.index.str.contains('DBUG').any():
       # previously ran in debug mode, but now done
-      df = self.remove_debug_links()
+      df = self.remove_debug_links() 
     else:
       df = self.df
-
-    df.to_csv(self.linksfile + '-final.csv')
+    
+    if save_final_csv:
+        df.to_csv(self.linksfile + '-final.csv')
 
     self.log.info('Creating Pyomo Model (debug=%s)' % debug_mode)
 
-    model = ConcreteModel(name=model_name)
+    model = ConcreteModel()
 
     model.N = Set(initialize=self.nodes)
     model.k = Set(initialize=range(15))
@@ -242,17 +244,18 @@ class CALVIN():
     model.sink = Param(initialize='SINK', within=Any)
 
     def init_params(p):
-      if p == 'cost' and debug_mode:
-        return (lambda model,i,j,k: debug_cost 
+        if p == 'cost' and debug_mode:
+            return (lambda model,i,j,k: debug_cost 
                   if ('DBUG' in str(i)+'_'+str(j))
                   else 1.0)
-      else:
-        return lambda model,i,j,k: df.loc[str(i)+'_'+str(j)+'_'+str(k)][p]
+        else:
+            self.param_cache = df.to_dict(orient="index")
+            return lambda model,i,j,k: self.param_cache[f"{i}_{j}_{k}"][p]
 
-    model.u = Param(model.A, initialize=init_params('upper_bound'), mutable=True)
-    model.l = Param(model.A, initialize=init_params('lower_bound'), mutable=True)
-    model.a = Param(model.A, initialize=init_params('amplitude'))
-    model.c = Param(model.A, initialize=init_params('cost'))
+    model.u = Param(model.A, initialize=init_params('upper_bound'), mutable=True, within=Reals)
+    model.l = Param(model.A, initialize=init_params('lower_bound'), mutable=True, within=Reals)
+    model.a = Param(model.A, initialize=init_params('amplitude'), within=Reals)
+    model.c = Param(model.A, initialize=init_params('cost'), within=Reals)
 
     # The flow over each arc
     model.X = Var(model.A, within=Reals)
@@ -274,29 +277,22 @@ class CALVIN():
 
     # To speed up creating the mass balance constraints, first
     # create dictionaries of arcs_in and arcs_out of every node
-    # These are NOT Pyomo data, and Pyomo does not use "model._" at all
     arcs_in = {}
     arcs_out = {}
-
-    def arc_list_hack(model, i,j,k):
-      if j not in arcs_in:
-        arcs_in[j] = []
-      arcs_in[j].append((i,j,k))
-
-      if i not in arcs_out:
-        arcs_out[i] = []
-      arcs_out[i].append((i,j,k))
-      return [0]
-
-    model._ = Set(model.A, initialize=arc_list_hack)
-
-    # Enforce flow through each node (mass balance)
+    
+    for (i,j,k) in self.links:
+        arcs_out.setdefault(i, []).append((i,j,k))
+        arcs_in.setdefault(j, []).append((i,j,k))
+   
     def flow_rule(model, node):
-      if node in [value(model.source), value(model.sink)]:
-          return Constraint.Skip
-      outflow  = sum(model.X[i,j,k]/model.a[i,j,k] for i,j,k in arcs_out[node])
-      inflow = sum(model.X[i,j,k] for i,j,k in arcs_in[node])
-      return inflow == outflow
+        if node in [value(model.source), value(model.sink)]:
+            return Constraint.Skip
+        return (
+        sum(model.X[i,j,k] for i,j,k in arcs_in.get(node, [])) # inflow
+        ==
+        sum(model.X[i,j,k]/model.a[i,j,k] for i,j,k in arcs_out.get(node, [])) # outflow
+    )
+    
     model.flow = Constraint(model.N, rule=flow_rule)
 
     model.dual = Suffix(direction=Suffix.IMPORT)
