@@ -9,7 +9,7 @@ import pandas as pd
 
 class CALVIN():
 
-  def __init__(self, linksfile, ic=None, no_od=False, log_name="calvin"):
+  def __init__(self, linksfile, ic=None, log_name="calvin"):
     """
     Initialize CALVIN model object.
 
@@ -68,11 +68,7 @@ class CALVIN():
 
     self.nodes = pd.unique(df[['i','j']].values.ravel()).tolist()
     self.links = list(zip(df.i,df.j,df.k))
-    self.networkcheck() # make sure things aren't broken
-    
-    if no_od:
-        self.no_gw_overdraft()
-    
+    self.networkcheck() # make sure things aren't broken    
 
   def apply_ic(self, ic):
     """
