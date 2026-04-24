@@ -3,6 +3,10 @@ import os
 import datetime
 from collections import defaultdict
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.style.use("ggplot")
 
 def save_dict_as_csv(data, filename, mode="w"):
     """
@@ -202,3 +206,127 @@ def aggregate_regions(fp):
     sc.to_csv(f"{fp}/shortage_cost.csv")
     sv.to_csv(f"{fp}/shortage_volume.csv")
     flow.to_csv(f"{fp}/flow.csv")
+    
+    generate_portfolio_plot(fp)
+
+
+def plot_clustered_stacked(
+    dfall,
+    labels=None,
+    title="Water Supply Portfolio",
+    H="/",
+    **kwargs):
+    """
+    Creates clustered stacked bar plot.
+
+    Parameters
+    ----------
+    dfall : list[pd.DataFrame]
+        dataframe to be plotted
+    labels : list[str]
+        (example: ['urban', 'ag'])
+    title : str
+        Title for graph
+    H : str
+        Hatch pattern
+    """
+
+    n_df = len(dfall)
+    n_col = len(dfall[0].columns)
+    n_ind = len(dfall[0].index)
+
+    axe = plt.subplot(111)
+
+    for df in dfall:
+        axe = df.plot(
+            kind="bar",
+            linewidth=0,
+            stacked=True,
+            ax=axe,
+            legend=False,
+            grid=False,
+            **kwargs)
+
+    h, l = axe.get_legend_handles_labels()
+
+    for i in range(0, n_df * n_col, n_col):
+        for pa in h[i:i + n_col]:
+            for rect in pa.patches:
+                rect.set_x(rect.get_x() + 1 / float(n_df + 1) * i / float(n_col))
+                rect.set_hatch(H * int(i / n_col))
+                rect.set_width(1 / float(n_df + 1))
+
+    axe.set_xticks((np.arange(0, 2 * n_ind, 2) + 1 / float(n_df + 1)) / 2.)
+    axe.set_xticklabels(dfall[0].index,rotation=0)
+    axe.set_title(title)
+
+    dummy_bars = []
+
+    for i in range(n_df):
+        dummy_bars.append(axe.bar(0,0,color="gray",hatch=H * i))
+
+    legend_main = axe.legend(h[:n_col],l[:n_col],loc=[1.01, 0.5])
+
+    if labels is not None:
+        plt.legend(dummy_bars,labels,loc=[1.01, 0.1])
+
+    axe.add_artist(legend_main)
+
+    return axe
+
+
+def generate_portfolio_plot(fp):
+    """
+    read data from flow.csv 
+    create urban/ag supply portfolio plot.
+
+    Output:
+        resultdir/portfolio_plot.png
+    """
+
+    flow_path = os.path.join(fp,"flow.csv")
+
+    if not os.path.exists(flow_path):
+        print("could not find flow.csv. No Plot.")
+        return
+
+    portfolio_path = "calvin/data/portfolio.csv"
+
+    if not os.path.exists(portfolio_path):
+        print("could not find portfolio.csv. No Plot.")
+        return
+
+    F = pd.read_csv(flow_path,index_col=0,parse_dates=True)
+
+    portfolio = pd.read_csv( portfolio_path,index_col=0)
+
+    regions = portfolio.region.unique()
+    supply_types = portfolio.supplytype.unique()
+
+    new_df_urban = pd.DataFrame(index=regions)
+    new_df_ag = pd.DataFrame(index=regions)
+
+    for region in regions:
+        for supply in supply_types:
+
+            urban_subset = F.filter(regex=rf"{region}_{supply}_urban")
+            urban_value = (urban_subset.sum(axis=1).mean() if not urban_subset.empty else 0)
+            new_df_urban.loc[region,supply] = urban_value
+
+            ag_subset = F.filter(regex=rf"{region}_{supply}_ag")
+            ag_value = (ag_subset.sum(axis=1).mean() if not ag_subset.empty else 0)
+            new_df_ag.loc[region,supply] = ag_value
+
+    plt.figure(figsize=(5, 3))
+
+    plot_clustered_stacked([new_df_urban, new_df_ag],labels=["urban", "ag"],title="Water Supply Portfolio")
+
+    plt.grid()
+    plt.ylabel('Delivery (TAF/m)')
+    plt.tight_layout()
+
+    output_path = os.path.join(fp, "portfolio_plot.png")
+    plt.savefig(output_path, dpi=300, bbox_inches="tight")
+    plt.close()
+
+    print(f"Portfolio plot saved:\n" f"{output_path}")
