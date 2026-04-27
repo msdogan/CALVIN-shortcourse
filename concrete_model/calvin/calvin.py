@@ -181,7 +181,7 @@ class CALVIN():
       links.upper_bound = maxub
       links['link'] = links.i.map(str) + '_' + links.j.map(str) + '_' + links.k.map(str)
       links.set_index('link', inplace=True)
-      self.df = self.df._append(links.drop_duplicates())
+      self.df = pd.concat([df,links.drop_duplicates()])
 
 
   def fix_hydropower_lbs(self):
@@ -226,6 +226,7 @@ class CALVIN():
       Use when there may be infeasibilities in the network.
     :param debug_cost: When in debug mode, assign this cost ($/AF) to flow on debug links.
       This should be an arbitrarily high number.
+    :param save_final_csv: (boolean) Whether to save final network as csv after all modifications.
     :returns: nothing, but creates the model object (self.model)
     """
 
@@ -318,6 +319,8 @@ class CALVIN():
     :param maxiter: (int) maximum iterations for debug mode.
     :returns: nothing, but assigns results to self.model.solutions.
     :raises: RuntimeError, if problem is found to be infeasible.
+    :param tee: (boolean) Whether to show solver progress in the console
+    :param save_json: (boolean) Whether to save raw solver outputs as a json
     """
 
     from pyomo.opt import SolverFactory
