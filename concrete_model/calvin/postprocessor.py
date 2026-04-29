@@ -234,6 +234,7 @@ def plot_clustered_stacked(
     n_df = len(dfall)
     n_col = len(dfall[0].columns)
     n_ind = len(dfall[0].index)
+    
 
     axe = plt.subplot(111)
 
@@ -278,6 +279,7 @@ def plot_clustered_stacked(
 def generate_portfolio_plot(fp):
     """
     read data from flow.csv 
+    read data from shortage_volume.csv 
     create urban/ag supply portfolio plot.
 
     Output:
@@ -285,9 +287,14 @@ def generate_portfolio_plot(fp):
     """
 
     flow_path = os.path.join(fp,"flow.csv")
+    shortage_vol_path = os.path.join(fp,"shortage_volume.csv")
 
     if not os.path.exists(flow_path):
         print("could not find flow.csv. No Plot.")
+        return
+    
+    if not os.path.exists(shortage_vol_path):
+        print("could not find shortage_volume.csv. No Plot.")
         return
 
     portfolio_path = "calvin/data/portfolio.csv"
@@ -297,8 +304,9 @@ def generate_portfolio_plot(fp):
         return
 
     F = pd.read_csv(flow_path,index_col=0,parse_dates=True)
+    Shortage = pd.read_csv(shortage_vol_path,index_col=0,parse_dates=True)
 
-    portfolio = pd.read_csv( portfolio_path,index_col=0)
+    portfolio = pd.read_csv(portfolio_path,index_col=0)
 
     regions = portfolio.region.unique()
     supply_types = portfolio.supplytype.unique()
@@ -307,8 +315,11 @@ def generate_portfolio_plot(fp):
     new_df_ag = pd.DataFrame(index=regions)
 
     for region in regions:
+        urban_shortage =  Shortage.filter(regex=rf"{region}_urban")
+        urban_shortage_value = (urban_shortage.sum(axis=1).mean() if not urban_shortage.empty else 0)
+        ag_shortage =  Shortage.filter(regex=rf"{region}_ag")
+        ag_shortage_value = (ag_shortage.sum(axis=1).mean() if not ag_shortage.empty else 0)
         for supply in supply_types:
-
             urban_subset = F.filter(regex=rf"{region}_{supply}_urban")
             urban_value = (urban_subset.sum(axis=1).mean() if not urban_subset.empty else 0)
             new_df_urban.loc[region,supply] = urban_value
@@ -316,13 +327,15 @@ def generate_portfolio_plot(fp):
             ag_subset = F.filter(regex=rf"{region}_{supply}_ag")
             ag_value = (ag_subset.sum(axis=1).mean() if not ag_subset.empty else 0)
             new_df_ag.loc[region,supply] = ag_value
+        new_df_urban.loc[region,'SHRTG'] = urban_shortage_value
+        new_df_ag.loc[region,'SHRTG'] = ag_shortage_value
 
-    plt.figure(figsize=(5, 3))
+    plt.figure(figsize=(5.5, 3))
 
     plot_clustered_stacked([new_df_urban, new_df_ag],labels=["urban", "ag"],title="Water Supply Portfolio")
 
     plt.grid()
-    plt.ylabel('Delivery (TAF/m)')
+    plt.ylabel('Delivery / Shortage (TAF/m)')
     plt.tight_layout()
 
     output_path = os.path.join(fp, "portfolio_plot.png")
