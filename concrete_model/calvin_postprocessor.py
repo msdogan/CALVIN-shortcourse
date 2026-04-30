@@ -28,7 +28,7 @@ warnings.filterwarnings("ignore")
  PATHS
 -----------------------
 """
-fp = Path('results_1921_1922_debug')
+fp = Path('network_historical_with_overdraft_feb')
 resultdir = Path(f'postprocess_{fp}')
 resultdir.mkdir(parents=True, exist_ok=True)
 
@@ -120,7 +120,7 @@ save(gw_pumping, 'groundwater_pumping')
 ag_delivery = filter_links(flow_no_debug, link_df, 'A', 'HU')
 save(ag_delivery, 'ag_delivery_total')
 
-ag_delivery_separated = flow_no_debug.loc[:, link_df['orgn'].str.startswith(('HU'))]
+ag_delivery_separated = filter_links(flow_no_debug, link_df, 'HU',None)
 ag_delivery_separated = ag_delivery_separated.drop(columns=['HU500-AgS_Owens'], errors='ignore') # Remove Owens ag delivery, fixed & no economics
 save(ag_delivery_separated, 'ag_delivery_separated')
 
@@ -139,11 +139,10 @@ save(ag_scarcity_percent, 'ag_scarcity_percent')
  URBAN DELIVERY & SCARCITY
 -----------------------
 """
-urban_mask = (link_df['term'].str.startswith(('INT','EXT','Ext','IND','Ind','ERES','ERes','IRES','IRes')))
-urban_delivery = flow_no_debug.loc[:, urban_mask]
+urban_delivery = filter_links(flow_no_debug, link_df, ('HX','U'), ('INT','EXT','Ext','IND','Ind','ERES','ERes','IRES','IRes'))
 save(urban_delivery, 'urban_delivery')
 
-urban_scarcity = scarcity_vol.loc[:,urban_mask]
+urban_scarcity = scarcity_vol.loc[:,urban_delivery.columns]
 urban_target = urban_delivery + urban_scarcity
 urban_scarcity_percent = (urban_scarcity / urban_target * 100).clip(lower=0)
 
@@ -162,7 +161,7 @@ ag_delivery_gw = filter_links(flow_no_debug, link_df, 'HGP', 'A')
 
 urban_delivery_sw = filter_links(flow_no_debug, link_df, 'WTP', 'U')
 urban_delivery_gw = filter_links(flow_no_debug, link_df, 'HGP', 'U')
-urban_delivery_rc = flow_no_debug.loc[:, link_df['term'].str.startswith(('HNP','HP'))]
+urban_delivery_rc = filter_links(flow_no_debug, link_df, None, ('HNP','HP'))
 
 save(ag_delivery_sw, 'ag_delivery_sw')
 save(ag_delivery_gw, 'ag_delivery_gw')
@@ -189,10 +188,9 @@ save(surplus_delta_outflow, 'surplus_delta_outflow')
 -----------------------
 These are inputs
 """
-rim_mask = (link_df['orgn'].str.startswith('INFLOW')) & (link_df['term'].str.startswith('SR'))
-rim_inflow = flow_no_debug.loc[:, rim_mask].drop(columns=['INFLOW-SR_CR3'], errors='ignore') # Colorado River water
+rim_inflow = filter_links(flow_no_debug, link_df, 'INFLOW', 'SR')
+rim_inflow = rim_inflow.drop(columns=['INFLOW-SR_CR3'], errors='ignore') # Colorado River water
 save(rim_inflow, 'rim_inflow')
 
-gw_mask = (link_df['orgn'].str.startswith('INFLOW')) & (link_df['term'].str.startswith('GW'))
-gw_inflow = flow_no_debug.loc[:, gw_mask]
+gw_inflow = filter_links(flow_no_debug, link_df, 'INFLOW', 'GW')
 save(gw_inflow, 'gw_inflow')
